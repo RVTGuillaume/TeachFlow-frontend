@@ -7,7 +7,6 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
-    // ✅ CHANGÉ: localStorage → sessionStorage
     const token = sessionStorage.getItem('token');
     if (token) config.headers.Authorization = `Bearer ${token}`;
   }
@@ -17,8 +16,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401 && typeof window !== 'undefined') {
-      // ✅ CHANGÉ: localStorage → sessionStorage
+    if (
+      err.response?.status === 401 &&
+      typeof window !== 'undefined' &&
+      !window.location.pathname.includes('/login')
+    ) {
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('user');
       window.location.href = '/login';

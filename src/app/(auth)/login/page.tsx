@@ -145,9 +145,13 @@ export default function LoginPage() {
     mode: 'onChange',
   });
 
-  const emailValue = watch('email');
-  const passwordValue = watch('password');
+const emailValue = watch('email');
+const passwordValue = watch('password');
 
+
+const clearErrorOnChange = () => {
+  if (serverError) setServerError('');
+};
   // Nettoyage du timer au démontage
   useEffect(() => () => {
     if (redirectTimer.current) clearTimeout(redirectTimer.current);
@@ -156,8 +160,6 @@ export default function LoginPage() {
 // ── Soumission ───────────────────────────────────────────────────────────
 const onSubmit = async (data: FormData) => {
   setLoading(true);
-  setServerError('');
-
   try {
     const res = await api.post('/auth/login', {
       email: data.email,
@@ -170,8 +172,7 @@ const onSubmit = async (data: FormData) => {
     sessionStorage.setItem('token', res.data.token);
     sessionStorage.setItem('user', JSON.stringify(res.data.user));
 
-    const firstName =
-      res.data.user?.firstName ?? res.data.user?.name?.split(' ')[0] ?? '';
+    const firstName = res.data.user?.nom?.split(' ')[0] ?? '';
 
     setUserName(firstName);
     setSuccess(true);
@@ -296,7 +297,9 @@ const onSubmit = async (data: FormData) => {
                   id="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="jean@ecole.mg"
+                    onKeyDown={clearErrorOnChange}   
+
+                  placeholder="Prayer@Gethsémani.mg"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? 'email-error' : undefined}
                   className={[
@@ -350,6 +353,8 @@ const onSubmit = async (data: FormData) => {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
+                    onKeyDown={clearErrorOnChange}   // ← AJOUTE CETTE LIGNE
+
                   placeholder="••••••••"
                   aria-invalid={!!errors.password}
                   aria-describedby={errors.password ? 'password-error' : undefined}
@@ -393,22 +398,42 @@ const onSubmit = async (data: FormData) => {
             
 
             {/* Erreur serveur */}
-            <AnimatePresence>
-              {serverError && (
-                <motion.div
-                  role="alert"
-                  aria-live="assertive"
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.25 }}
-                  className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-start gap-2.5"
+            <AnimatePresence mode="wait">
+
+            {serverError && (
+              <motion.div
+                key="server-error"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                initial={{ opacity: 0, height: 0, marginTop: 0, marginBottom: 0 }}
+                animate={{ opacity: 1, height: 'auto', marginTop: 16, marginBottom: 16 }}
+                exit={{ opacity: 0, height: 0, marginTop: 0, marginBottom: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-start gap-2.5 overflow-hidden"
+              >
+                <IconAlert />
+                <div className="flex-1">
+                  <p className="font-semibold text-red-300">✘ Connexion échouée</p>
+                  <p className="text-xs mt-0.5 text-red-400/80">{serverError}</p>
+                  <p className="text-xs mt-1.5 text-slate-500">
+                    Corrigez vos identifiants et réessayez.
+                  </p>
+                </div>
+                {/* Bouton fermer — Nielsen H3: contrôle et liberté */}
+                <button
+                  type="button"
+                  onClick={() => setServerError('')}
+                  aria-label="Fermer le message d'erreur"
+                  className="text-red-400/50 hover:text-red-300 transition-colors flex-shrink-0 mt-0.5"
                 >
-                  <IconAlert />
-                  <span>{serverError}</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
             {/* Bouton */}
             <button
