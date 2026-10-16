@@ -231,6 +231,27 @@ export default function LoginPage() {
         <div className="absolute bottom-[-15%] left-[-8%] w-[180px] h-[180px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] rounded-full bg-amber-400/8 dark:bg-amber-400/4 blur-3xl"/>
       </div>
 
+      {/* Bouton retour accueil */}
+      <div className="absolute top-2 left-2 sm:top-5 sm:left-5 z-20">
+        <Link
+          href="/"
+          aria-label="Retour à la page d'accueil"
+          className="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl
+            bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm
+            border border-gray-200/80 dark:border-slate-700/60
+            text-[11px] sm:text-sm font-medium text-gray-600 dark:text-slate-300
+            hover:text-indigo-600 dark:hover:text-indigo-400
+            hover:border-indigo-300 dark:hover:border-indigo-500/50
+            shadow-sm transition-all duration-200
+            focus:outline-none focus:ring-2 focus:ring-indigo-400/30 dark:focus:ring-indigo-500/30"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <span>Accueil</span>
+        </Link>
+      </div>
+
       {/* Toggle thème responsive */}
       <div className="absolute top-2 right-2 sm:top-5 sm:right-5 z-20 flex items-center gap-1 sm:gap-2">
         <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500 hidden sm:block">Apparence</span>

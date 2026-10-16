@@ -289,6 +289,27 @@ export default function RegisterPage() {
         <div className="absolute bottom-[-15%] left-[-8%] w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] rounded-full bg-emerald-400/10 dark:bg-emerald-400/4 blur-3xl"/>
       </div>
 
+      {/* Bouton retour accueil */}
+      <div className="absolute top-3 left-3 z-20">
+        <Link
+          href="/"
+          aria-label="Retour à la page d'accueil"
+          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl
+            bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm
+            border border-gray-200/80 dark:border-slate-700/60
+            text-sm font-medium text-gray-600 dark:text-slate-300
+            hover:text-indigo-600 dark:hover:text-indigo-400
+            hover:border-indigo-300 dark:hover:border-indigo-500/50
+            shadow-sm transition-all duration-200
+            focus:outline-none focus:ring-2 focus:ring-indigo-400/30 dark:focus:ring-indigo-500/30"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <span>Accueil</span>
+        </Link>
+      </div>
+
       {/* Toggle thème */}
       <div className="absolute top-3 right-3 z-20">
         <ThemeToggle />
